@@ -83,9 +83,10 @@
 		</nav>
 		<span class="loading-use-flexbox" style="margin-top:100px;" id="loading"><div class="loadingImg"></div></span>
 		
-		<div class="uk-block uk-width-medium-1-1 uk-container-center" id="iframeDiv">
+		<div class="uk-block uk-width-medium-1-1 uk-container-center">
 			<span id="iframeSpan"> </span>
 		</div>
+		<div id="fillFooter" style="height:100px;"></div>
 	</div>
 </div>
 
@@ -137,7 +138,6 @@
 		setTimeout(function(){
 			var h = iframe.contentWindow.document.body.scrollHeight;
 			iframe.height = h + "px";
-			$("div#iframeDiv").height((h + 100) + "px");
 		}, 50);
 	}
 	
@@ -152,6 +152,7 @@
         $("span#loading").fadeOut(300, function(){
 			changeIframeHeigh();
 			iframe.fadeIn(500);
+			$("div#fillFooter").show();
 		});
 		
 		var contents = $(this).contents();
@@ -188,7 +189,7 @@
 		changeNav();
 		iframe.fadeOut(300);
 		$("span#loading").fadeIn(300);
-		
+		$("div#fillFooter").hide();
 		iframe.remove();
 		iframe = iframeElement(getPage());
 		$("span#iframeSpan").append(iframe);
