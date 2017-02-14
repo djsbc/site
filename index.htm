@@ -1,0 +1,197 @@
+<html>
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>永信HAC健康盃慢速壘球邀請賽 線上報名系統</title>
+
+<!--<link rel="stylesheet" href="../uikit/css/uikit.docs.min.css" />-->
+<script src="./js/jquery-3.1.1.min.js"></script>
+
+<link rel="stylesheet" href="../uikit/css/uikit.almost-flat.min.css" />
+<script src="./uikit/js/uikit.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!--custom css-->
+<link rel="stylesheet" href="./css/style.css" />
+<link rel="stylesheet" href="./css/table.css" />
+<style>
+	.indexCoverImage{
+		height: 30%;
+		background-image: url('./images/cover.png');
+		background-repeat:no-repeat;
+		background-position:0px 51%;
+	}
+	.indexCoverTitle{
+		background: rgba(50, 50, 50, 0.8);
+		font-size: 50px;
+		line-height: 75px;
+		color: #fff;
+		width:100%;
+		text-align:center;
+	}
+	.resumeStyle dt{
+		font-size:18px;
+		line-height: 30px;
+	}
+	
+	.subnavStyle{
+		font-size:16px;
+		color: #fff;
+	}
+	
+	html, body { height: 100%; }
+	
+	.wrap {
+		min-height: 100%;
+	}
+	
+	.main {
+		overflow:auto; 
+		padding-bottom: 100px;
+	}
+	
+	.tm-footer {
+		width: 100%;
+		position: relative;
+		margin-top: -100px; /* negative value of footer height */
+		height: 100px;
+		clear:both;
+	}
+</style>
+</head>
+
+<body>
+
+<div class="uk-width-medium-1-1 uk-container-center wrap">
+	<div class="uk-cover-background uk-position-relative indexCoverImage" >
+		<div class="uk-position-cover uk-flex uk-flex-center uk-flex-bottom">
+			<div class="indexCoverTitle">永信HAC健康盃慢速壘球邀請賽 線上報名系統</div>
+		</div>
+	</div>
+	
+	<div class="uk-width-medium-1-2 uk-container-center" style="/*background-color:rgb(240,240,240); margin-top:20px;*/">
+		<nav class="uk-navbar" style="margin-top:20px;">
+			<ul id="navUL" class="uk-navbar-nav">
+				<li id="nav-home"><a href="#home">首頁</a></li>
+				<li id="nav-form"><a href="#form">報名</a></li>
+				<li id="nav-search"><a href="#search">查詢報名狀態</a></li>
+				<li id="nav-remittance"><a href="#remittance">填寫匯款資料</a></li>
+			</ul>
+		</nav>
+		<span class="loading-use-flexbox" style="margin-top:100px;" id="loading"><div class="loadingImg"></div></span>
+		
+		<div class="uk-block uk-width-medium-1-1 uk-container-center">
+			<span id="iframeSpan"> </span>
+		</div>
+
+	</div>
+</div>
+
+<div class="tm-footer" style="background-color:rgb(90,90,90);">
+	<div class="uk-container uk-container-center uk-text-center">
+		<div class="uk-panel">
+			
+		</div>
+		<ul class="uk-subnav uk-subnav-line uk-flex-center subnavStyle" style="margin-top:30px;">
+			<li>Copyright 2017 Li-Xain Chen. All rights reserved.</li>
+		</ul>
+	</div>
+</div>
+
+<script language="javascript">
+	function getUrlTag(){
+		var url = decodeURIComponent(location.href), idx = url.indexOf("#")
+		var hash = idx != -1 ? url.substring(idx+1).split("#")[0] : "";
+		return hash;
+	}
+
+	var iframeElement = function(url){
+		return jQuery('<iframe/>', {
+			id: "iframe",
+			src: url,
+			scrolling: "no",
+			frameborder: "0",
+			style: "width: 100%;display:none;",
+		})
+	};
+	
+	function getPage(){
+		var tag = getUrlTag();		
+		if(tag == "form"){
+			return "./pages/form.html";
+		}else if(tag == "search"){
+			return "./pages/search.html";
+		}else if(tag == "remittance"){
+			return "./pages/transferInfo.html";
+		}else if(tag == "home"){
+			return "./pages/home.html";
+		}else{
+			return "./pages/home.html";
+		}
+	}
+	
+	function changeIframeHeigh(){
+		var iframe = document.getElementById("iframe");
+		setTimeout(function(){
+			iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";
+		}, 50);
+	}
+	
+	function changeNav(){
+		$("ul#navUL").find(".uk-active").removeClass("uk-active");
+		var navTag = (getUrlTag() == "") ? "home" : getUrlTag();
+		$("li#nav-" + navTag).addClass("uk-active");
+	}
+	
+	function iframeLoaded(iframe){
+		iframe.on('load', function(){
+        $("span#loading").fadeOut(300, function(){
+			changeIframeHeigh();
+			iframe.fadeIn(500);
+		});
+		
+		var contents = $(this).contents();
+		
+		contents.find('body').on('click', function(){
+			changeIframeHeigh();
+		});
+		
+		contents.on('keyup', function(e) {
+			changeIframeHeigh();
+		});
+		
+		contents.on('keydown', function(e) {
+			changeIframeHeigh();
+		});
+		
+		contents.on('keypress', function(e) {
+			changeIframeHeigh();
+		});
+		
+		});
+	}
+	
+	//程式開始
+	changeNav();
+	
+	var iframe = iframeElement(getPage());
+	$("span#iframeSpan").append(iframe);
+	
+	iframeLoaded(iframe);
+	
+	$(window).on('hashchange', function(e){
+		changeNav();
+		iframe.fadeOut(300);
+		$("span#loading").fadeIn(300);
+		
+		iframe.remove();
+		iframe = iframeElement(getPage());
+		$("span#iframeSpan").append(iframe);
+		
+		iframeLoaded(iframe);
+	});
+</script>
+
+</body>
+
+</html>

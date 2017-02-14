@@ -1,0 +1,130 @@
+<html>
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>永信HAC健康盃慢速壘球邀請賽 管理系統</title>
+
+<!--<link rel="stylesheet" href="../uikit/css/uikit.docs.min.css" />-->
+<link rel="stylesheet" href="../uikit/css/uikit.almost-flat.min.css" />
+<script src="../js/jquery-3.1.1.min.js"></script>
+<script src="../js/md5.js"></script>
+<script src="../uikit/js/uikit.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!--Google-->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="./js/initGoogleAPI.js"></script>
+<!--<meta name="google-signin-client_id" content="1068514341308-hmbh0jmrq6fdcph97tqql9v6pl1om6i0.apps.googleusercontent.com">-->
+
+<!--custom css-->
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/table.css" />
+<style>
+	.indexCoverImage{
+		height: 45%;
+		background-image: url('./images/cover.png');
+		background-repeat:no-repeat;
+		background-position:0px 51%;
+	}
+	.indexCoverTitle{
+		background: rgba(50, 50, 50, 0.8);
+		font-size: 50px;
+		line-height: 75px;
+		color: #fff;
+		width:100%;
+		text-align:center;
+	}
+	.resumeStyle dt{
+		font-size:18px;
+		line-height: 30px;
+	}
+	
+	.subnavStyle{
+		font-size:16px;
+		color: #fff;
+	}
+	
+	.tm-footer {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+	}
+</style>
+</head>
+
+<body>
+
+<div class="uk-width-medium-1-1 uk-container-center">
+
+	<div class="uk-cover-background uk-position-relative indexCoverImage" >
+		<div class="uk-position-cover uk-flex uk-flex-center uk-flex-bottom">
+			<div class="indexCoverTitle">永信HAC健康盃慢速壘球邀請賽 管理系統</div>
+		</div>
+	</div>
+	
+	<div class="uk-width-medium-1-2 uk-container-center" style="background-color:rgb(240,240,240); margin-top:20px;">
+		<div class="uk-block uk-width-medium-1-1 uk-container-center">
+			<span id="show" style="text-align: center; font-size: 200%; display:;">
+				<span class="loading-use-flexbox"><div class="loadingImg"></div></span>
+			</span>
+		</div>
+	</div>
+	
+	<div class="tm-footer" style="background-color:rgb(90,90,90); margin-top:20px;">
+		<div class="uk-container uk-container-center uk-text-center">
+			<div class="uk-panel" style="margin-top:20px;">
+			</div>
+			
+			<ul class="uk-subnav uk-subnav-line uk-flex-center subnavStyle" style="margin-top:10px; margin-bottom:20px;">
+				<li>Copyright 2017 Li-Xain Chen. All rights reserved.</li>
+			</ul>
+		</div>
+    </div>
+</div>
+<script language="javascript">
+	$(document).ready(function(){
+		appStart();
+	});
+	
+	function gapiLoaded(){
+		if (auth2.isSignedIn.get()) {
+			var profile = auth2.currentUser.get().getBasicProfile();
+			console.log('ID: ' + profile.getId());
+			console.log('Full Name: ' + profile.getName());
+			console.log('Given Name: ' + profile.getGivenName());
+			console.log('Family Name: ' + profile.getFamilyName());
+			console.log('Image URL: ' + profile.getImageUrl());
+			console.log('Email: ' + profile.getEmail());
+			
+			var id_token = googleUser.Zi.id_token;
+			
+			var dataObj = new Object();
+			dataObj.mode = "admin-list";
+			dataObj.token = id_token;
+			dataObj.page = "1";
+			
+			console.log(id_token);
+			
+			$.get("https://script.google.com/macros/s/AKfycbzG5omXeexMerKEDVPaAbe2zzzE7tmOvkw5JboMb2GIYrGrhg8/exec", 
+				dataObj,
+			function (result) {
+				console.log(dataObj);
+				console.log(result);
+				//$("span#login").css("display", "none");
+				if(result == "false"){
+					//document.location.href="login.htm";
+				}else{
+					$("span#show").css("display", "none");
+					console.log($.parseJSON(result));
+				}
+			});
+			
+		}else{
+			document.location.href="login.htm";
+		}
+	}
+</script>
+
+</body>
+
+</html>
