@@ -35,6 +35,7 @@
 
 <span id="show_success" style="text-align: center; font-size: 22pt; line-height: 24pt; display:none;">
 	<span class="loading-use-flexbox"><div class="hacLogoImg"></div></span>
+	<br/><br/>
 	<p><b><span id="status"></span></b>系統已將報名資料送交給主辦單位。</p>
 	<p>為了確保您的權益，建議您下載報名表作為證明時使用。</p>
 	<p>
@@ -160,7 +161,7 @@
 			id: "players",
 			name: "players",
 			style: "float: left;",
-			html: '<input name="players" id="players" type="text" style="width:150px; margin-left:10px;" class="uk-form-medium jqNewInput" inputId="'+inputId+'" /><a href="javascript:void(0);" name="removePlayer" id="removePlayer" class="button button-flat-caution" style="margin-top:5px; margin-left:5px;">移除</a>',
+			html: '<input name="players" id="players" mustfill="false" type="text" style="width:150px; margin-left:10px;" class="uk-form-medium jqNewInput" inputId="'+inputId+'" /><a href="javascript:void(0);" name="removePlayer" id="removePlayer" class="button button-flat-caution" style="margin-top:5px; margin-left:5px;">移除</a>',
 		})
 	};
 	
@@ -354,6 +355,10 @@
 			$.get("https://script.google.com/macros/s/AKfycbw4y7bsq1Q512FIDRQ3On2DQV36Ha9zN2yboJ6DS08WSLLYiNc/exec", 
 				dataObj,
 			function (result) {
+				try{
+					parent.changeIframeHeigh();
+				}catch(e){}
+			
 				console.log(result);
 				if(result == "false"){
 					$("span#show").html("<p>系統發生錯誤，無法送出資料。請聯絡主辦單位! <a href='javascript:location.reload();'>重新整理</a></p>");
