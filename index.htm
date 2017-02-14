@@ -82,8 +82,8 @@
 			</ul>
 		</nav>
 		<span class="loading-use-flexbox" style="margin-top:100px;" id="loading"><div class="loadingImg"></div></span>
-		<div style="height:60px;"></div>
-		<div class="uk-block uk-width-medium-1-1 uk-container-center">
+		
+		<div class="uk-block uk-width-medium-1-1 uk-container-center" id="iframeDiv">
 			<span id="iframeSpan"> </span>
 		</div>
 	</div>
@@ -137,6 +137,7 @@
 		setTimeout(function(){
 			var h = iframe.contentWindow.document.body.scrollHeight;
 			iframe.height = h + "px";
+			$("div#iframeDiv").height(h + "px");
 		}, 50);
 	}
 	
