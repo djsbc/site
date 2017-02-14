@@ -62,21 +62,19 @@
 	</div>
 	
 	<div class="uk-width-medium-4-5 uk-container-center" style="background-color:rgb(240,240,240); margin-top:20px;">
+	
 		<nav class="uk-navbar" style="margin-top:20px;">
 			<ul id="navUL" class="uk-navbar-nav">
-				<li class="uk-active"><a href="admin.htm">管理中心首頁</a></li>
+				<li><a href="admin.htm">管理中心首頁</a></li>
 				<li><a href="admin_unfill.htm">尚未填寫匯款資料的隊伍</a></li>
-				<li><a href="admin_wait.htm">正在等候審核的隊伍</a></li>
+				<li class="uk-active"><a href="admin_wait.htm">正在等候審核的隊伍</a></li>
 				<li><a href="user.htm">登出</a></li>
 			</ul>
 		</nav>
+	
 		<div class="uk-block uk-width-medium-1-1 uk-container-center">
-			<div id="data">
-				<h2 style="text-align:right;">已報名球隊數 : <span id="teamAmount">-</span> 隊</h2>
-			</div>
-			
-			<hr/>
-			<h2 style="margin-left:5%;">報名列表</h2>
+			<h2 style="margin-left:5%;">等待審核的球隊</h2>
+
 			
 			<span class="loading-use-flexbox" id="loading-list"><div class="loadingImg"></div></span>
 			
@@ -88,8 +86,10 @@
 						<td>聯絡人</td>
 						<td>連絡電話</td>
 						<td>組別</td>
+						<td>匯款資料</td>
 						<td>預賽無法初賽日期</td>
 						<td>詳細資料</td>
+						<td>審核</td>
 					</tr>
 				</table>
 				<div style="text-align:center;">
@@ -116,6 +116,8 @@
 		appStart();
 	});
 	
+	var token = "";
+	
 	function gapiLoaded(){
 		if (auth2.isSignedIn.get()) {
 			var profile = auth2.currentUser.get().getBasicProfile();
@@ -135,11 +137,12 @@
 				var dataObj = new Object();
 				
 				page = parseInt(page);
-				dataObj.mode = "admin-list";
+				dataObj.mode = "admin-wait";
 				dataObj.token = id_token;
 				dataObj.page = page+"";
 				
 				//console.log(id_token);
+				token = id_token;
 				
 				$.get("https://script.google.com/macros/s/AKfycbzG5omXeexMerKEDVPaAbe2zzzE7tmOvkw5JboMb2GIYrGrhg8/exec", 
 					dataObj,
@@ -151,8 +154,8 @@
 					}else{
 						$(".datarowodd, .dataroweven").remove();
 						var json = $.parseJSON(result);
-						$("span#teamAmount").text(json.teamAmount);
 						var data = json.list;
+						
 						for(var i in data){
 							var idArray = data[i][13].split("_");
 							var idHtml = idArray[0] + "_" + idArray[1] + "_" + idArray[2] + "_" + "<span style='color:red;'>" + idArray[3] + "</span>" + "_" + idArray[4];
@@ -163,17 +166,17 @@
 							html += '<td>' + data[i][5] + '</td>';
 							html += '<td>' + data[i][6] + '</td>';
 							html += '<td>' + data[i][2] + '</td>';
+							html += '<td>' + data[i][12] + '</td>';
 							html += '<td>' + data[i][10] + '</td>';
 							html += '<td><a href="https://docs.google.com/document/d/' + data[i][14] + '/edit?usp=drivesdk" target="_blank" class="button button-rounded button-flat-caution" id="view"><i class="uk-icon-google"></i> 開啟</a></td>';
+							html += '<td><span><a href="javascript:void(0);" onclick="doAllow(this);" id="'+data[i][13]+'" class="button button-rounded button-flat-action" id="view">允許</a></span></td>';
 							html += '</tr>';
 							$("table#tableList").append(html);
 						}
-						
 						if(data.length <= 0){
-							var html = '<td colspan="7" style="text-align:center;font-size:14px;">目前沒有隊伍!</td>';
+							var html = '<td colspan="9" style="text-align:center;font-size:14px;">目前沒有隊伍!</td>';
 							$("table#tableList").append(html);
 						}
-						
 						if(page > 1){
 							$("a#list-pre").css("display", "");
 						}else{
@@ -206,9 +209,33 @@
 				getData(page);
 			});
 			
+			
 		}else{
 			document.location.href="login.htm";
 		}
+	}
+	
+	function doAllow(obj){
+		console.log($(obj).attr('id'));
+		var parentSpan = $(obj).parent();
+		$(obj).parent().html("<span style='color:gray;'>處理中...</span>");
+		
+		var dataObj = new Object();
+		
+		dataObj.mode = "setAccept";
+		dataObj.token = token;
+		dataObj.teamID = $(obj).attr('id');
+		
+		$.get("https://script.google.com/macros/s/AKfycbzG5omXeexMerKEDVPaAbe2zzzE7tmOvkw5JboMb2GIYrGrhg8/exec", 
+			dataObj,
+		function (result) {
+			console.log(result);
+			if(result == "true"){
+				parentSpan.html("<span style='color:green;'>已核准!</span>");
+			}else{
+				parentSpan.html("<span style='color:red;'>發生錯誤!</span>");
+			}
+		});
 	}
 </script>
 

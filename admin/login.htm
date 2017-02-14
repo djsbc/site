@@ -11,6 +11,10 @@
 <script src="../uikit/js/uikit.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!--Google-->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id" content="1068514341308-hmbh0jmrq6fdcph97tqql9v6pl1om6i0.apps.googleusercontent.com">
+
 <!--custom css-->
 <link rel="stylesheet" href="../css/style.css" />
 <link rel="stylesheet" href="../css/table.css" />
@@ -66,6 +70,11 @@
 				<span id="login" class="use-flexbox">
 					<div class="g-signin2" data-onsuccess="onSignIn"></div>
 				</span>
+				
+				<h1>申請管理權限</h1>
+				<p style="text-align:center;"><span style="font-size:16pt;">
+					<a href="reg.htm">申請</a>
+				</span></p>
 			</span>
 	</div>
 	
@@ -107,6 +116,7 @@
 				$("span#login").css("display", "none");
 				if(result == "true"){
 					document.location.href="admin.htm";
+					$("span#show").html("請稍候...");
 				}else{
 					$("span#show").html("並不允許 " + profile.getEmail() + " 登入控制介面! <br/><a href='#' onclick='signOut();'>登出</a>");
 				}

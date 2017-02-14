@@ -61,22 +61,19 @@
 		</div>
 	</div>
 	
+	
 	<div class="uk-width-medium-4-5 uk-container-center" style="background-color:rgb(240,240,240); margin-top:20px;">
 		<nav class="uk-navbar" style="margin-top:20px;">
 			<ul id="navUL" class="uk-navbar-nav">
-				<li class="uk-active"><a href="admin.htm">管理中心首頁</a></li>
-				<li><a href="admin_unfill.htm">尚未填寫匯款資料的隊伍</a></li>
+				<li><a href="admin.htm">管理中心首頁</a></li>
+				<li class="uk-active"><a href="admin_unfill.htm">尚未填寫匯款資料的隊伍</a></li>
 				<li><a href="admin_wait.htm">正在等候審核的隊伍</a></li>
 				<li><a href="user.htm">登出</a></li>
 			</ul>
 		</nav>
+	
 		<div class="uk-block uk-width-medium-1-1 uk-container-center">
-			<div id="data">
-				<h2 style="text-align:right;">已報名球隊數 : <span id="teamAmount">-</span> 隊</h2>
-			</div>
-			
-			<hr/>
-			<h2 style="margin-left:5%;">報名列表</h2>
+			<h2 style="margin-left:5%;">尚未填寫匯款資料的球隊</h2>
 			
 			<span class="loading-use-flexbox" id="loading-list"><div class="loadingImg"></div></span>
 			
@@ -135,7 +132,7 @@
 				var dataObj = new Object();
 				
 				page = parseInt(page);
-				dataObj.mode = "admin-list";
+				dataObj.mode = "admin-unfill";
 				dataObj.token = id_token;
 				dataObj.page = page+"";
 				
@@ -151,7 +148,6 @@
 					}else{
 						$(".datarowodd, .dataroweven").remove();
 						var json = $.parseJSON(result);
-						$("span#teamAmount").text(json.teamAmount);
 						var data = json.list;
 						for(var i in data){
 							var idArray = data[i][13].split("_");

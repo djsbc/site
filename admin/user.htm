@@ -11,17 +11,19 @@
 <script src="../uikit/js/uikit.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!--button-->
-<link rel="stylesheet" href="../css/button/css/buttons.css">
-<script type="text/javascript" src="../css/button/js/buttons.js"></script>
-
 <!--Google-->
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-<meta name="google-signin-client_id" content="1068514341308-hmbh0jmrq6fdcph97tqql9v6pl1om6i0.apps.googleusercontent.com">
+<script src="./js/initGoogleAPI.js"></script>
+<!--<meta name="google-signin-client_id" content="1068514341308-hmbh0jmrq6fdcph97tqql9v6pl1om6i0.apps.googleusercontent.com">-->
 
 <!--custom css-->
 <link rel="stylesheet" href="../css/style.css" />
 <link rel="stylesheet" href="../css/table.css" />
+
+<!--button-->
+<link rel="stylesheet" href="../css/button/css/buttons.css">
+<script type="text/javascript" src="../css/button/js/buttons.js"></script>
+
 <style>
 	.indexCoverImage{
 		height: 45%;
@@ -59,22 +61,19 @@
 		</div>
 	</div>
 	
-	<div class="uk-width-medium-1-2 uk-container-center" style="background-color:rgb(240,240,240); margin-top:20px;height:45%;">
+	<div class="uk-width-medium-4-5 uk-container-center" style="background-color:rgb(240,240,240); margin-top:20px;">
+		<nav class="uk-navbar" style="margin-top:20px;">
+			<ul id="navUL" class="uk-navbar-nav">
+				<li><a href="admin.htm">管理中心首頁</a></li>
+				<li><a href="admin_unfill.htm">尚未填寫匯款資料的隊伍</a></li>
+				<li><a href="admin_wait.htm">正在等候審核的隊伍</a></li>
+				<li class="uk-active"><a href="login.htm">登出</a></li>
+			</ul>
+		</nav>
 		<div class="uk-block uk-width-medium-1-1 uk-container-center">
-			<span style="text-align:center;">
-				<h1>申請管理權限</h1>
-				<p style="text-align:center;"><span id="show" style="font-size:16pt;">
-					請稍候...
-				</span></p>
-				<span id="login" class="use-flexbox" style="display:none;">
-					<div class="g-signin2" data-onsuccess="onSignIn"></div>
-				</span>
-				
-				<h1>登入</h1>
-				<p style="text-align:center;"><span style="font-size:16pt;">
-					<a href="login.htm">前往登入畫面</a>
-				</span></p>
-			</span>
+			<div id="show" style="text-align:center;font-size:16pt;">
+				請稍候...
+			</div>
 		</div>
 	</div>
 	
@@ -90,48 +89,32 @@
     </div>
 </div>
 <script language="javascript">
-	//console.log(hex_md5("yshac"));
-	var lock = false;
-	function onSignIn(googleUser) {
-		lock = true;
-		var profile = googleUser.getBasicProfile();
-		var id_token = googleUser.getAuthResponse().id_token;
-		
-		var dataObj = new Object();
-		dataObj.mode = "reg";
-		dataObj.token = id_token;
-		
-		$.get("https://script.google.com/macros/s/AKfycbzG5omXeexMerKEDVPaAbe2zzzE7tmOvkw5JboMb2GIYrGrhg8/exec", 
-			dataObj,
-		function (result) {
-			console.log(result);
-			console.log(id_token);
-			$("span#login").css("display", "none");
-			if(result == "false"){
-				$("span#show").html(profile.getEmail() + " 已經申請過權限，詳細情況請洽管理者! <br/><a href='#' onclick='signOut();'>登出</a>");
-			}else{
-				$("span#show").html(profile.getEmail() + " 已經送出申請，正在等候人工審核! <br/><a href='#' onclick='signOut();'>登出</a>");
-			}
-		});
+	$(document).ready(function(){
+		appStart();
+	});
+	
+	function gapiLoaded(){
+		if (auth2.isSignedIn.get()) {
+			var profile = auth2.currentUser.get().getBasicProfile();
+			//console.log('ID: ' + profile.getId());
+			//console.log('Full Name: ' + profile.getName());
+			//console.log('Given Name: ' + profile.getGivenName());
+			//console.log('Family Name: ' + profile.getFamilyName());
+			//console.log('Image URL: ' + profile.getImageUrl());
+			console.log('Email: ' + profile.getEmail());
+			$("div#show").html(profile.getEmail() + "歡迎進入管理中心! <br/><p><a href='admin.htm'>進入管理頁面</a></p><br/><a href='#' onclick='signOut();'>登出</a>");
+		}else{
+			document.location.href="login.htm";
+		}
 	}
 	
 	function signOut() {
 		var auth2 = gapi.auth2.getAuthInstance();
-		auth2.signOut().then(function () {
+			auth2.signOut().then(function () {
 			console.log('User signed out.');
 		});
-		$("span#show").html("");
-		$("span#login").css("display", "");
 	}
 	
-	$(document).ready(function(){
-		if (lock){
-			$("span#login").css("display", "none");
-		}else{
-			$("span#login").css("display", "");
-			$("span#show").html("");
-		}
-	});
 </script>
 
 </body>

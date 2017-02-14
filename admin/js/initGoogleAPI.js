@@ -55,7 +55,9 @@ var userChanged = function (user) {
   /*document.getElementById('curr-user-cell').innerText =
     JSON.stringify(user, undefined, 2);*/
   try{
-	  gapiLoaded();
+	  setTimeout(function(){
+		  gapiLoaded();
+	  }, 500);
   }catch(e){}
 };
 
