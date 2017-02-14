@@ -82,11 +82,10 @@
 			</ul>
 		</nav>
 		<span class="loading-use-flexbox" style="margin-top:100px;" id="loading"><div class="loadingImg"></div></span>
-		
+		<div style="height:60px;"></div>
 		<div class="uk-block uk-width-medium-1-1 uk-container-center">
 			<span id="iframeSpan"> </span>
 		</div>
-		<div id="toFixHeight"></div>
 	</div>
 </div>
 
@@ -138,7 +137,6 @@
 		setTimeout(function(){
 			var h = iframe.contentWindow.document.body.scrollHeight;
 			iframe.height = h + "px";
-			$("div#toFixHeight").height((h * 0.5) + "px");
 		}, 50);
 	}
 	
