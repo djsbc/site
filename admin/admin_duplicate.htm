@@ -45,19 +45,14 @@
 	<div id="isLogin" class="uk-width-medium-4-5 uk-container-center main" style="display:none;background-color:rgb(240,240,240); margin-top:20px;">
 		<nav class="uk-navbar" style="margin-top:20px;">
 			<ul id="navUL" class="uk-navbar-nav">
-				<li class="uk-active"><a href="admin.htm">管理中心首頁</a></li>
+				<li><a href="admin.htm">管理中心首頁</a></li>
 				<li><a href="admin_unfill.htm">尚未填寫匯款資料的隊伍</a></li>
 				<li><a href="admin_wait.htm">正在等候審核的隊伍</a></li>
-				<li><a href="admin_duplicate.htm">重複報名名單</a></li>
+				<li class="uk-active"><a href="admin_duplicate.htm">重複報名名單</a></li>
 				<li><a href="user.htm">登出</a></li>
 			</ul>
 		</nav>
 		<div class="uk-block uk-width-medium-1-1 uk-container-center">
-			<div id="data">
-				<h2 style="text-align:right;">已報名球隊數 : <span id="teamAmount">-</span> 隊</h2>
-			</div>
-			
-			<hr/>
 			<h2 style="margin-left:5%;">報名列表</h2>
 			
 			<span class="loading-use-flexbox" id="loading-list"><div class="loadingImg"></div></span>
@@ -65,13 +60,11 @@
 			<div id="list" style="display:none;">
 				<table id="tableList" style="width: 90%; margin-left:5%;margin-top:20px;line-height:16pt;" class="fancytable">
 					<tr class="headerrow" id="trHead">
-						<td>序號</td>
-						<td>球隊</td>
-						<td>聯絡人</td>
-						<td>連絡電話</td>
-						<td>組別</td>
-						<td>預賽無法初賽日期</td>
-						<td>詳細資料</td>
+						<td>球員姓名</td>
+						<td>第一支所屬球隊</td>
+						<td>第一支所屬球隊序號</td>
+						<td>第二支所屬球隊</td>
+						<td>第二支所屬球隊序號</td>
 					</tr>
 				</table>
 				<div style="text-align:center;">
@@ -120,7 +113,7 @@
 				var dataObj = new Object();
 				
 				page = parseInt(page);
-				dataObj.mode = "admin-list";
+				dataObj.mode = "admin-duplicate";
 				dataObj.token = id_token;
 				dataObj.page = page+"";
 				
@@ -140,17 +133,13 @@
 						$("span#teamAmount").text(json.teamAmount);
 						var data = json.list;
 						for(var i in data){
-							var idArray = data[i][13].split("_");
-							var idHtml = idArray[0] + "_" + idArray[1] + "_" + idArray[2] + "_" + "<span style='color:red;'>" + idArray[3] + "</span>" + "_" + idArray[4];
 							var css = ((i % 2) == 0)? "datarowodd" : "dataroweven";
 							var html = '<tr class="'+css+'">';
-							html += '<td>' + idHtml + '</td>';
+							html += '<td>' + data[i][0] + '</td>';
 							html += '<td>' + data[i][1] + '</td>';
-							html += '<td>' + data[i][5] + '</td>';
-							html += '<td>' + data[i][6] + '</td>';
 							html += '<td>' + data[i][2] + '</td>';
-							html += '<td>' + data[i][10] + '</td>';
-							html += '<td><a href="https://docs.google.com/document/d/' + data[i][14] + '/edit?usp=drivesdk" target="_blank" class="button button-rounded button-flat-caution" id="view"><i class="uk-icon-google"></i> 開啟</a></td>';
+							html += '<td>' + data[i][3] + '</td>';
+							html += '<td>' + data[i][4] + '</td>';
 							html += '</tr>';
 							$("table#tableList").append(html);
 						}
@@ -193,7 +182,7 @@
 			});
 			
 		}else{
-			document.location.href="login.htm";
+			//document.location.href="login.htm";
 		}
 	}
 </script>

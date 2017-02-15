@@ -23,51 +23,7 @@
 <!--button-->
 <link rel="stylesheet" href="../css/button/css/buttons.css">
 <script type="text/javascript" src="../css/button/js/buttons.js"></script>
-
-<style>
-	.indexCoverImage{
-		height: 45%;
-		background-image: url('./images/cover.png');
-		background-repeat:no-repeat;
-		background-position:0px 51%;
-	}
-	.indexCoverTitle{
-		background: rgba(50, 50, 50, 0.8);
-		font-size: 50px;
-		line-height: 75px;
-		color: #fff;
-		width:100%;
-		text-align:center;
-	}
-	.resumeStyle dt{
-		font-size:18px;
-		line-height: 30px;
-	}
-	
-	.subnavStyle{
-		font-size:16px;
-		color: #fff;
-	}
-	
-	html, body { height: 100%; }
-	
-	.wrap {
-		min-height: 100%;
-	}
-	
-	.main {
-		overflow:auto; 
-		padding-bottom: 100px;
-	}
-	
-	.tm-footer {
-		width: 100%;
-		position: relative;
-		margin-top: -100px; /* negative value of footer height */
-		height: 100px;
-		clear:both;
-	}
-</style>
+<link rel="stylesheet" href="../css/main-style.css" />
 </head>
 
 <body>
@@ -92,6 +48,7 @@
 				<li><a href="admin.htm">管理中心首頁</a></li>
 				<li class="uk-active"><a href="admin_unfill.htm">尚未填寫匯款資料的隊伍</a></li>
 				<li><a href="admin_wait.htm">正在等候審核的隊伍</a></li>
+				<li><a href="admin_duplicate.htm">重複報名名單</a></li>
 				<li><a href="user.htm">登出</a></li>
 			</ul>
 		</nav>
@@ -120,18 +77,19 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="tm-footer" style="background-color:rgb(90,90,90); margin-top:20px;">
-		<div class="uk-container uk-container-center uk-text-center">
-			<div class="uk-panel" style="margin-top:20px;">
-			</div>
-			
-			<ul class="uk-subnav uk-subnav-line uk-flex-center subnavStyle" style="margin-top:10px; margin-bottom:20px;">
-				<li>Copyright 2017 Li-Xain Chen. All rights reserved.</li>
-			</ul>
-		</div>
-    </div>
 </div>
+
+<div class="tm-footer" style="background-color:rgb(90,90,90); margin-top:20px;">
+	<div class="uk-container uk-container-center uk-text-center">
+		<div class="uk-panel">
+			
+		</div>
+		<ul class="uk-subnav uk-subnav-line uk-flex-center subnavStyle" style="margin-top:30px;">
+			<li>Copyright 2017 Li-Xain Chen. All rights reserved.</li>
+		</ul>
+	</div>
+</div>
+
 <script language="javascript">
 	$(document).ready(function(){
 		appStart();
@@ -170,7 +128,8 @@
 					console.log(dataObj);
 					//$("span#login").css("display", "none");
 					if(result == "false"){
-						document.location.href="login.htm";
+						alert("系統發生錯誤!");
+						document.location.href="index.htm";
 					}else{
 						$(".datarowodd, .dataroweven").remove();
 						var json = $.parseJSON(result);
