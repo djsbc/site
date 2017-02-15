@@ -5,7 +5,9 @@ var googleUser; // The current user.
  * Calls startAuth after Sign in V2 finishes setting up.
  */
 var appStart = function() {
-  gapi.load('auth2', initSigninV2);
+  setTimeout(function(){
+	  gapi.load('auth2', initSigninV2);
+  }, 500)
 };
 
 /**
