@@ -133,11 +133,18 @@
 		}
 	}
 	
-	function changeIframeHeigh(){
+	function changeIframeHeigh(height){
 		var iframe = document.getElementById("iframe");
 		setTimeout(function(){
-			var h = iframe.contentWindow.document.body.scrollHeight;
-			iframe.height = h + "px";
+			//var h = iframe.contentWindow.document.body.scrollHeight;
+			var h = $(iframe.contentWindow.document).find("html").height();
+			if(height){
+				iframe.height = height + "px";
+				console.log("hei " + height);
+			}else{
+				iframe.height = h + "px";
+				console.log("h " + h);
+			}
 		}, 50);
 	}
 	

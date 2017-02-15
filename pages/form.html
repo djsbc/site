@@ -133,7 +133,6 @@
 	<p style="text-align: center;"><button name="submit" id="submit" disabled="true" class="button button-rounded button-flat-primary">提交</button></p>
 	
 </div>
-<div id="scroll" class="bottomNav" style="display:none;"><a href="#top">移動至頁面頂部</a></div>
 <div style="height:80px;"></div>
 
 <script language="javascript">
@@ -324,7 +323,7 @@
 	});
 	
 	//送出
-	$("button#submit").click(function(event){		
+	$("button#submit").click(function(event){	
 		var error = 0;
 		$( "form#toPost" ).find('input[type=text], textarea, select[name|="group"]').each(function(){
 			if(!checkEmail($(this))){
@@ -369,7 +368,11 @@
 			//var data = JSON.stringify(dataObj);
 			
 			$("div#cover").fadeOut( 500 , function() {
-				$("span#show").fadeIn(100);
+				$("span#show").fadeIn(100, function(){
+					try{
+						parent.changeIframeHeigh();
+					}catch(e){}
+				});
 			});
 			$.get("https://script.google.com/macros/s/AKfycbw4y7bsq1Q512FIDRQ3On2DQV36Ha9zN2yboJ6DS08WSLLYiNc/exec", 
 				dataObj,
@@ -398,18 +401,16 @@
 					$("span#signInId").text(json.id);
 					
 					$("span#show").fadeOut(100);
-					$("span#show_success").fadeIn(500);
-					
-					$("div#scroll").fadeIn(100);
+					$("span#show_success").fadeIn(500, function(){
+						try{
+							parent.changeIframeHeigh();
+						}catch(e){}
+					});
 				}
 			});
 		}
 	
 		return;
-	});
-	
-	$("div#scroll").click(function(){
-		$(this).fadeOut(100);
 	});
 </script>
 
