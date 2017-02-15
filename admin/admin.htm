@@ -48,20 +48,45 @@
 		font-size:16px;
 		color: #fff;
 	}
+	
+	html, body { height: 100%; }
+	
+	.wrap {
+		min-height: 100%;
+	}
+	
+	.main {
+		overflow:auto; 
+		padding-bottom: 100px;
+	}
+	
+	.tm-footer {
+		width: 100%;
+		position: relative;
+		margin-top: -100px; /* negative value of footer height */
+		height: 100px;
+		clear:both;
+	}
 </style>
 </head>
 
 <body>
 
-<div class="uk-width-medium-1-1 uk-container-center">
-
+<div class="uk-width-medium-1-1 uk-container-center wrap">
+	
 	<div class="uk-cover-background uk-position-relative indexCoverImage" >
 		<div class="uk-position-cover uk-flex uk-flex-center uk-flex-bottom">
 			<div class="indexCoverTitle">永信HAC健康盃慢速壘球邀請賽 管理系統</div>
 		</div>
 	</div>
 	
-	<div class="uk-width-medium-4-5 uk-container-center" style="background-color:rgb(240,240,240); margin-top:20px;">
+	<div id="unLogin" class="uk-width-medium-4-5 uk-container-center main" style="background-color:rgb(240,240,240); margin-top:20px;">
+		<br/>
+		<span class="loading-use-flexbox"><div class="loadingImg"></div></span>
+		<br/>
+	</div>
+	
+	<div id="isLogin" class="uk-width-medium-4-5 uk-container-center main" style="display:none;background-color:rgb(240,240,240); margin-top:20px;">
 		<nav class="uk-navbar" style="margin-top:20px;">
 			<ul id="navUL" class="uk-navbar-nav">
 				<li class="uk-active"><a href="admin.htm">管理中心首頁</a></li>
@@ -99,18 +124,19 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="tm-footer" style="background-color:rgb(90,90,90); margin-top:20px;">
-		<div class="uk-container uk-container-center uk-text-center">
-			<div class="uk-panel" style="margin-top:20px;">
-			</div>
-			
-			<ul class="uk-subnav uk-subnav-line uk-flex-center subnavStyle" style="margin-top:10px; margin-bottom:20px;">
-				<li>Copyright 2017 Li-Xain Chen. All rights reserved.</li>
-			</ul>
-		</div>
-    </div>
 </div>
+
+<div class="tm-footer" style="background-color:rgb(90,90,90); margin-top:20px;">
+	<div class="uk-container uk-container-center uk-text-center">
+		<div class="uk-panel" style="margin-top:20px;">
+		</div>
+		
+		<ul class="uk-subnav uk-subnav-line uk-flex-center subnavStyle" style="margin-top:10px; margin-bottom:20px;">
+			<li>Copyright 2017 Li-Xain Chen. All rights reserved.</li>
+		</ul>
+	</div>
+</div>
+
 <script language="javascript">
 	$(document).ready(function(){
 		appStart();
@@ -118,6 +144,8 @@
 	
 	function gapiLoaded(){
 		if (auth2.isSignedIn.get()) {
+			$("#unLogin").hide();
+			$("#isLogin").show();
 			var profile = auth2.currentUser.get().getBasicProfile();
 			console.log('ID: ' + profile.getId());
 			console.log('Full Name: ' + profile.getName());
