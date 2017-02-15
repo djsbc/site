@@ -7,7 +7,7 @@ var googleUser; // The current user.
 var appStart = function() {
   setTimeout(function(){
 	  gapi.load('auth2', initSigninV2);
-  }, 500)
+  }, 500);
 };
 
 /**
