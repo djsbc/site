@@ -92,13 +92,13 @@
 		<br />
 		<span class="mustFill">* </span><span class="titleStyle">預賽無法出賽日期 : </span><br />
 		<div class="uk-form-controls" style="font-size:14pt;margin-top:5px;">
-			<label style="float: left;"><input type="checkbox" style="margin-left:10px" id="attentedDate" name="attentedDate" value="皆可出賽"> 皆可出賽</label>
-			<label style="float: left;"><input type="checkbox" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/4/16"> 2017/4/16</label>
-			<label style="float: left;"><input type="checkbox" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/4/23"> 2017/4/23</label>
-			<label style="float: left;"><input type="checkbox" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/4/30"> 2017/4/30</label>
-			<label style="float: left;"><input type="checkbox" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/5/07"> 2017/5/07</label>
-			<label style="float: left;"><input type="checkbox" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/5/14"> 2017/5/14</label>
-			<label style="float: left;"><input type="checkbox" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/5/02"> 2017/5/21</label>
+			<label style="float: left;"><input type="radio" style="margin-left:10px" id="attentedDate" name="attentedDate" value="皆可出賽"> 皆可出賽</label>
+			<label style="float: left;"><input type="radio" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/4/16"> 2017/4/16</label>
+			<label style="float: left;"><input type="radio" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/4/23"> 2017/4/23</label>
+			<label style="float: left;"><input type="radio" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/4/30"> 2017/4/30</label>
+			<label style="float: left;"><input type="radio" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/5/07"> 2017/5/07</label>
+			<label style="float: left;"><input type="radio" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/5/14"> 2017/5/14</label>
+			<label style="float: left;"><input type="radio" style="margin-left:10px" id="attentedDate" name="attentedDate" value="2017/5/02"> 2017/5/21</label>
 			<div style="clear: left;"></div>
 		</div>
 		<br /><br />
@@ -244,11 +244,21 @@
 		}
 	}
 	
-	function isCheckboxChecked(){
+	/*function isCheckboxChecked(){
 		var checkBox = $( "form#toPost" ).find('input:checkbox[name|="attentedDate"]');
 		$('span#err_attentedDate').remove();
 		if(checkBox.parent().find(":checked").length == 0){
 			checkBox.parent().parent().after(errorMessage("err_attentedDate", "請至少勾選一個日期!"));
+			return false;
+		}else{
+			return true;
+		}
+	}*/
+	function isCheckboxChecked(){
+		var checkBox = $( "form#toPost" ).find('input:radio[name|="attentedDate"]');
+		$('span#err_attentedDate').remove();
+		if(checkBox.parent().find(":checked").length == 0){
+			checkBox.parent().parent().after(errorMessage("err_attentedDate", "請至少選取一個選項!"));
 			return false;
 		}else{
 			return true;
@@ -283,12 +293,15 @@
 		checkEmpty($(this));
 	});
 	
-	$('input:checkbox[name|="attentedDate"]').change(function() {
+	/*$('input:checkbox[name|="attentedDate"]').change(function() {
+		isCheckboxChecked();
+	});*/
+	$('input:radio[name|="attentedDate"]').change(function() {
 		isCheckboxChecked();
 	});
 	
 	//避免矛盾
-	$('input:checkbox[name|="attentedDate"]').change(function() {
+	/*$('input:checkbox[name|="attentedDate"]').change(function() {
 		if(this.checked) {
 			if($(this).val() == "皆可出賽"){
 				$('input:checkbox[name|="attentedDate"]').each(function(){
@@ -303,7 +316,7 @@
 		if($('input:checkbox[name|="attentedDate"]').length - 1 == $('input:checkbox[name|="attentedDate"]:checked').length){
 			$('input:checkbox[name|="attentedDate"]').prop('checked', false);
 		}
-	});
+	});*/
 	
 	//禁止預設表單動作
 	$( "form#toPost" ).submit(function( event ) {
@@ -340,12 +353,18 @@
 			dataObj.mail = toMatchJson($("input#mail").val());
 			dataObj.address = toMatchJson($("input#address").val());
 			
-			dataObj.attentedDate = $('input:checkbox[name|="attentedDate"]:checked').map(function () {
+			/*dataObj.attentedDate = $('input:checkbox[name|="attentedDate"]:checked').map(function () {
+										return this.value;
+									}).get().join(" , ");*/
+			dataObj.attentedDate = $('input:radio[name|="attentedDate"]:checked').map(function () {
 										return this.value;
 									}).get().join(" , ");
 			
 			dataObj.players = $('input[name|="players"]').map(function () {
-									return this.value;
+									var value = this.value.replace(/\s/g, "");
+									if(value != ""){
+										return this.value;
+									}
 								}).get().join(" , ");
 			//var data = JSON.stringify(dataObj);
 			
